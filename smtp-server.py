@@ -88,27 +88,27 @@ class SMTPChanel(BaseSMTPChannel):
                 self.push('454 Temporary authentication failure.')
                 self.close_when_done()
 
-    # def smtp_STARTTLS(self, arg):
-    #     if arg:
-    #         self.push('501 Syntax error (no parameters allowed)')
-    #     elif self.smtp_server.starttls_active and not isinstance(self.conn, ssl.SSLSocket):
-    #         self.push('220 Ready to start TLS')
-    #         self.conn.settimeout(30)
-    #         self.conn = self.smtp_server.ssl_ctx.wrap_socket(self.conn, server_side=True)
-    #         self.conn.settimeout(None)
-    #         # re-init channel
-    #         asynchat.async_chat.__init__(self, self.conn)
-    #         self.line = []
-    #         self.state = self.COMMAND
-    #         self.seen_greeting = 0
-    #         self.mailfrom = None
-    #         self.rcpttos = []
-    #         self.data = ''
-    #         self.authenticated = False
-    #         self.authenticating = False
-    #         self.service_channel = False
-    #     else:
-    #         self.push('454 TLS not available due to temporary reason')
+    def smtp_STARTTLS(self, arg):
+        if arg:
+            self.push('501 Syntax error (no parameters allowed)')
+        elif self.smtp_server.starttls_active and not isinstance(self.conn, ssl.SSLSocket):
+            self.push('220 Ready to start TLS')
+            self.conn.settimeout(30)
+            self.conn = self.smtp_server.ssl_ctx.wrap_socket(self.conn, server_side=True)
+            self.conn.settimeout(None)
+            # re-init channel
+            asynchat.async_chat.__init__(self, self.conn)
+            self.line = []
+            self.state = self.COMMAND
+            self.seen_greeting = 0
+            self.mailfrom = None
+            self.rcpttos = []
+            self.data = ''
+            self.authenticated = False
+            self.authenticating = False
+            self.service_channel = False
+        else:
+            self.push('454 TLS not available due to temporary reason')
 
     def smtp_EHLO(self, arg):
         if not arg:
