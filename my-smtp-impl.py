@@ -11,16 +11,21 @@ def log(values: str):
 
 class MyServer(Server):
     def __init__(self, handler):
-        super().__init__(handler)
+        super().__init__(handler, auth_required=True, hostname='adam-pc')
 
     @syntax('PING [Ignored]')
     async def smtp_PING(self, arg):
         log('Request for ping')
         await self.push('259 Pong')
 
-    @syntax('HELP [command]')
-    async def smtp_HELP(self, arg: str) -> None:
-        await self.push('{} Supported commands: {}')
+    # @syntax('HELP [command]')
+    # async def smtp_HELP(self, arg: str) -> None:
+    #     await self.push('help-called')
+
+    @syntax('AUTH [command]')
+    async def smtp_AUTH(self, arg: str):
+        log(arg)
+        await self.push('auth-starting...')
 
 
 class MyController(Controller):
