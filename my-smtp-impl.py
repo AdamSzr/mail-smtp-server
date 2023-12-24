@@ -1,7 +1,13 @@
 from aiosmtpd.controller import Controller
-from aiosmtpd.smtp import SMTP as Server, syntax
+from aiosmtpd.smtp import SMTP as Server, syntax, Session
 from aiosmtpd.handlers import Sink
 import datetime
+import base64
+
+# Define your user credentials (in a real application, use a secure storage)
+USER_CREDENTIALS = {
+    "adam": "adam"  # username: password
+}
 
 
 def log(values: str):
@@ -18,23 +24,49 @@ class MyServer(Server):
         log('Request for ping')
         await self.push('259 Pong')
 
-    # @syntax('HELP [command]')
-    # async def smtp_HELP(self, arg: str) -> None:
-    #     await self.push('help-called')
+    @syntax('Help [command]')
+    async def smtp_HELP(self, arg):
+        log('Request for help')
+        await super().smtp_HELP(self)
+        # await self.push('help running...')
+
 
     @syntax('AUTH [command]')
     async def smtp_AUTH(self, arg: str):
         log(arg)
-        await self.push('auth-starting...')
+
+        if arg.startswith('PLAIN '):
+            try:
+                _, username, password = base64.b64decode(arg[6:]).decode().split('\x00')
+                log('Username: ' + username + ' Password: ' + password)
+                if self.authenticate(username, password):
+                    user_session = Session(self.loop)
+                    user_session.auth_data = (username, password)
+                    user_session.authenticated = True
+                    user_session.extended_smtp = True
+                    self.session.auth = user_session
+
+                    self.session.authenticated = True
+                    self.session.auth_data = (username, password)
+                    await self.push('235 Authentication successful')
+                else:
+                    await self.push('535 Authentication failed')
+            except Exception as e:
+                log(str(e))
+                await self.push('500 Internal server error')
+        else:
+            await self.push('504 Unrecognized authentication type')
+
+    def authenticate(self, username, password):
+        return USER_CREDENTIALS.get(username) == password
 
 
 class MyController(Controller):
-
     def factory(self):
         return MyServer(self.handler)
 
 
-log('Staring SMTP server...')
+log('Starting SMTP server...')
 
 controller = MyController(Sink())
 controller.start()
