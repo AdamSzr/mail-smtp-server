@@ -1,0 +1,24 @@
+From: adam.szr98@gmail.com
+To: mr.honos@gmail.com
+Subject: Testowy temat
+X-Peer: ('::1', 60776, 0, 0)
+X-MailFrom: adam.szr98@gmail.com
+X-RcptTo: mr.honos@gmail.com
+
+To jest testowa tre���� wiadomo��ci.
+From: adam.szr98@gmail.com
+To: mr.honos@gmail.com
+Subject: Testowy temat
+X-Peer: ('::1', 34510, 0, 0)
+X-MailFrom: adam.szr98@gmail.com
+X-RcptTo: mr.honos@gmail.com
+
+To jest testowa tre���� wiadomo��ci.
+From: adam.szr98@gmail.com
+To: mr.honos@gmail.com
+Subject: Testowy temat
+X-Peer: ('::1', 45580, 0, 0)
+X-MailFrom: adam.szr98@gmail.com
+X-RcptTo: mr.honos@gmail.com
+
+To jest testowa tre���� wiadomo��ci.

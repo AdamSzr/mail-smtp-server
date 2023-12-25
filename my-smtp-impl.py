@@ -1,18 +1,30 @@
+from email.message import EmailMessage
+
 from aiosmtpd.controller import Controller
 from aiosmtpd.smtp import SMTP as Server, syntax, Session
-from aiosmtpd.handlers import Sink
+from aiosmtpd.handlers import Sink, AsyncMessage
 import datetime
+import asyncio
 import base64
+from email.utils import parsedate_to_datetime
+import json
+import traceback
+import my_smtp_relay_handler
 
 # Define your user credentials (in a real application, use a secure storage)
 USER_CREDENTIALS = {
     "adam": "adam"  # username: password
 }
 
+def authenticate(username, password):
+    return USER_CREDENTIALS.get(username) == password
+
 
 def log(values: str):
     time_now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(time_now + ' | ' + values)
+
+
 
 
 class MyServer(Server):
@@ -24,11 +36,11 @@ class MyServer(Server):
         log('Request for ping')
         await self.push('259 Pong')
 
-    @syntax('Help [command]')
-    async def smtp_HELP(self, arg):
-        log('Request for help')
-        await super().smtp_HELP(self)
-        # await self.push('help running...')
+    # @syntax('Help [command]')
+    # async def smtp_HELP(self, arg):
+    #     log('Request for help')
+    #     await super().smtp_HELP(self)
+    #     # await self.push('help running...')
 
 
     @syntax('AUTH [command]')
@@ -39,7 +51,7 @@ class MyServer(Server):
             try:
                 _, username, password = base64.b64decode(arg[6:]).decode().split('\x00')
                 log('Username: ' + username + ' Password: ' + password)
-                if self.authenticate(username, password):
+                if authenticate(username, password):
                     user_session = Session(self.loop)
                     user_session.auth_data = (username, password)
                     user_session.authenticated = True
@@ -57,8 +69,6 @@ class MyServer(Server):
         else:
             await self.push('504 Unrecognized authentication type')
 
-    def authenticate(self, username, password):
-        return USER_CREDENTIALS.get(username) == password
 
 
 class MyController(Controller):
@@ -68,8 +78,10 @@ class MyController(Controller):
 
 log('Starting SMTP server...')
 
-controller = MyController(Sink())
+controller = MyController(my_smtp_relay_handler.RelayHandler())
+controller.hostname = 'localhost'
 controller.start()
+
 log(controller.hostname + ' ' + str(controller.port))
 input("Press enter to exit;\n")
 log('Stopping SMTP server...')
