@@ -19,16 +19,18 @@ class IMAPServer:
             if not data:
                 break
 
-            tag, command = data.decode().split(' ')
-            print(f"Received command: {command}")
+            tag, command, *rest = data.decode().split(' ')
+            print(f"Recived tag: {tag}", f"Received command: {command}", rest)
 
             if 'SELECT' in command.upper():
                 self.selected_mailbox = command.split()[1]
                 response = f'* FLAGS (\\Seen \\Deleted)\r\n* OK [PERMANENTFLAGS (\\Seen \\Deleted \\*)] Flags permitted.\r\n* 0 EXISTS\r\n* 0 RECENT\r\nOK [READ-WRITE] SELECT completed\r\n'
             elif 'CAPABILITY' in command.upper():
-                response = f'* CAPABILITY IMAP4rev1  LOGINDISABLED\r\n{tag} OK CAPABILITY Completed\r\n'
+                response = f'* CAPABILITY IMAP4rev1  AUTH=PLAIN\r\n{tag} OK CAPABILITY Completed\r\n'
             elif 'CHECK' in command.upper():
                 response = f'{tag} OK CHECK Completed\r\n'
+            elif 'LOGIN' in command.upper():
+                response = f'{tag} OK LOGIN Completed\r\n'
             elif 'NOOP' in command.upper():
                 response = f'{tag} OK NOOP Completed\r\n'
             elif 'LOGOUT' in command.upper():
@@ -36,7 +38,7 @@ class IMAPServer:
 
             writer.write(response.encode())
             await writer.drain()
-            print('stopped connection')
+            print('server responsed with', response)
 
         print(f"Closing connection with {addr}")
         writer.close()
