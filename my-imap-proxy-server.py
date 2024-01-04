@@ -1,0 +1,157 @@
+import imaplib
+import email
+import socket
+import asyncio
+import base64
+from urllib import request
+
+# IMAP
+yandex_key = 'tnypwvqyyyqhviif'  #
+yandex_host = 'imap.yandex.com'
+yandex_port = 993
+yandex_login = 'rzeka24'  # rzeka24@yandex.com
+yandex_passw = yandex_key  # adam123%%
+
+
+breaking_keywords = [ 'COMPLETED' ] #,'OK', 'BAD', 'NO'
+# PROXY SERVER
+# which imitates real server.
+# but its only reads data from IMAP client (f.e thunderbird)
+# and sends it to real server (in this case yandex email)
+
+proxy_server_host = "localhost"  # Standard loopback interface address (localhost)
+proxy_server_port = 143  # Port to listen on (non-privileged ports are > 1023)
+
+def getPreparedClient():
+    client = imaplib.IMAP4_SSL(yandex_host, yandex_port)
+    return client
+
+
+prefix_yandex = 'server >'
+prefix_imap_client = 'client >'
+
+def handle_communication(data, data_from):
+    print(f'|[{data_from}]| {data}')
+
+
+def decode_credentials(credentials):
+    parts = base64.b64decode(credentials).decode('utf-8').split('\x00')
+    return [part for part in parts if part != '']
+
+
+
+class IMAPServer:
+    def __init__(self):
+        self.selected_mailbox = None
+
+    async def handle_client(self, thunderbird_reader, thunderbird_writer): # reader / writer  is a thunderbird socket
+        addr = thunderbird_writer.get_extra_info('peername')
+        print(f"Connected with {addr}")
+
+        # na początku serwer imap wysyła podstawowe info welcome message.
+        # client by default sends and recives welcome message.
+        imap_client = getPreparedClient()
+        welcome_message = '* OK IMAP4rev1 Server Ready\r\n'
+        handle_communication(welcome_message, prefix_yandex)
+        handle_communication('DMJG0 CAPABILITY\r\n', prefix_imap_client)
+        handle_communication('* CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID AUTH=PLAIN AUTH=XOAUTH2 IDLE MOVE',prefix_imap_client)
+        handle_communication('DMJG0 OK CAPABILITY Completed.',prefix_imap_client)
+
+        thunderbird_writer.write(welcome_message.encode())
+        await thunderbird_writer.drain()
+
+        while not thunderbird_reader.at_eof():
+            print('inside loop')
+            # teraz serwer oczekuja na zapytania od klienta.
+            thunderbird_req = await thunderbird_reader.read(4096)
+            if not thunderbird_req:
+                break
+
+            decoded_data = thunderbird_req.decode()
+            # save request from thunderbird
+            handle_communication(decoded_data, prefix_imap_client),
+
+            if 'authenticate' in decoded_data:
+                print('authenicate...')
+                tag = decoded_data.split(' ')
+                response = '+\r\n'
+                handle_communication(response, prefix_yandex)
+                thunderbird_writer.write(response.encode())
+                await thunderbird_writer.drain()
+                credentials_encoded = await thunderbird_reader.read(4096)
+                credentials = credentials_encoded
+                handle_communication(base64.b64decode(credentials_encoded).decode('utf-8'), prefix_imap_client)
+                print('credentials -> ', decode_credentials(credentials))
+                response = f'{tag} OK AUTHENTICATE completed\r\n'
+                handle_communication(request, prefix_yandex)
+                thunderbird_writer.write(response.encode())
+                await thunderbird_writer.drain()
+                continue
+
+            if 'login' in decoded_data:
+                print('login ....')
+                # login_status, message = imap_client.login(yandex_login, yandex_passw)
+                tag, command, *rest = decoded_data.split(' ')
+                my_req = f'{tag} login "{yandex_login}" "{yandex_passw}"\r\n'
+                imap_client.send(my_req.encode())
+                credentials = list(map(lambda a: a.strip(), rest[2:]))
+                print('credentials -> ', credentials)
+                login_resp = []
+                while True:
+                    login_resp_line = imap_client.readline()
+                    login_resp.append(login_resp_line)
+                    resp_text = login_resp_line.decode().upper()
+                    print('login-resp-line', resp_text)
+                    if any(keyword in resp_text for keyword in breaking_keywords):
+                        break
+
+                full_yandex_login_resp = b''.join(login_resp)
+                thunderbird_writer.write(full_yandex_login_resp)
+                await thunderbird_writer.drain()
+                continue
+
+            print('before send to yandex')
+            # send request to yandex via yandex-client
+            imap_client.send(thunderbird_req)
+            print('sended to yandex')
+
+            # revice data from yandex via yandex-client
+            print('before read from yandex')
+
+            yandex_server_data = []
+            while True:
+                line = imap_client.readline()
+                yandex_server_data.append(line)
+                line_str = line.decode().upper()
+                print(f'--> {line_str} <--')
+                if any(keyword.upper() in line_str for keyword in breaking_keywords):
+                    break
+
+            print('after read from yandex', yandex_server_data)
+
+            yandex_resp = b''.join(yandex_server_data)
+
+            # save response from yandex
+            handle_communication(yandex_resp, 'yandex'),
+
+            # send data to thunderbid
+            thunderbird_writer.write(yandex_resp)
+            print('sended to thunderbird')
+
+
+        print(f"Closing connection with {addr}")
+        thunderbird_writer.close()
+        await thunderbird_writer.wait_closed()
+
+
+async def run_server():
+    imap_server = IMAPServer()
+
+    server = await asyncio.start_server(imap_server.handle_client, proxy_server_host, proxy_server_port)
+    print(f'IMAP server runs ->  |[ {proxy_server_host}:{proxy_server_port} ]|')
+    async with server:
+        await server.serve_forever()
+
+asyncio.run(run_server())
+
+
