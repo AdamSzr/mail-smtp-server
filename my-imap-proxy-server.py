@@ -97,7 +97,7 @@ class IMAPServer:
                 credentials = credentials_encoded
                 handle_communication(credentials_encoded.decode(), prefix_imap_client)
                 print('credentials -> ', decode_credentials(credentials))
-                response = f'{tag[0]} OK PLAIN Authenticate Completed.\r\n'
+                response = f'{tag[0]} OK PLAIN authenticate Completed.\r\n'
                 handle_communication(response, prefix_yandex)
                 thunderbird_writer.write(response.encode())
                 await thunderbird_writer.drain()
