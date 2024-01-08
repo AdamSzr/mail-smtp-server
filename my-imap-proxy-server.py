@@ -32,8 +32,6 @@ messages = []
 prefix_yandex = 'server >'
 prefix_imap_client = 'client >'
 
-
-
 def save_list_to_file(string_list, file_name, separator=''):
     try:
         formatted_date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -45,13 +43,15 @@ def save_list_to_file(string_list, file_name, separator=''):
 
 def handle_communication(data, data_from):
     print(f'|[{data_from}]| {data}')
+
+    if isinstance(data, bytes):
+        print("Variable 'data' is of type 'bytes'")
     messages.append(f'{data_from} {data}')
 
 
 def decode_credentials(credentials):
     parts = base64.b64decode(credentials).decode('utf-8').split('\x00')
     return [part for part in parts if part != '']
-
 
 
 class IMAPServer:
@@ -75,7 +75,6 @@ class IMAPServer:
         await thunderbird_writer.drain()
 
         while not thunderbird_reader.at_eof():
-            print('inside loop')
             # teraz serwer oczekuja na zapytania od klienta.
             thunderbird_req = await thunderbird_reader.read(4096)
             if not thunderbird_req:
@@ -87,7 +86,6 @@ class IMAPServer:
             handle_communication(decoded_thunderbird_req, prefix_imap_client),
 
             if 'authenticate' in decoded_thunderbird_req:
-                print('authenicate...')
                 tag = decoded_thunderbird_req.split(' ')[0]
                 response = '+\r\n'
                 handle_communication(response, prefix_yandex)
@@ -96,7 +94,7 @@ class IMAPServer:
                 credentials_encoded = await thunderbird_reader.read(4096)
                 credentials = credentials_encoded
                 handle_communication(credentials_encoded.decode(), prefix_imap_client)
-                print('credentials -> ', decode_credentials(credentials))
+                print('auth credentials -> ', decode_credentials(credentials))
                 response = f'{tag[0]} OK PLAIN authenticate Completed.\r\n'
                 handle_communication(response, prefix_yandex)
                 thunderbird_writer.write(response.encode())
@@ -104,20 +102,18 @@ class IMAPServer:
                 continue
 
             if 'login' in decoded_thunderbird_req:
-                print('login ....')
                 # login_status, message = imap_client.login(yandex_login, yandex_passw)
                 tag, command, *rest = decoded_thunderbird_req.split(' ')
                 my_req = f'{tag} login "{yandex_login}" "{yandex_passw}"\r\n'
                 imap_client.send(my_req.encode())
                 handle_communication(my_req, prefix_imap_client)
                 credentials = list(map(lambda a: a.strip(), rest[2:]))
-                print('credentials -> ', credentials)
+                print('login credentials -> ', credentials)
                 login_resp = []
                 while True:
                     login_resp_line = imap_client.readline()
                     login_resp.append(login_resp_line)
                     resp_text = login_resp_line.decode().upper()
-                    print('login-resp-line', resp_text)
                     if any(keyword in resp_text for keyword in breaking_keywords):
                         break
 
@@ -127,14 +123,11 @@ class IMAPServer:
                 await thunderbird_writer.drain()
                 continue
 
-            print('before send to yandex')
             # send request to yandex via yandex-client
             imap_client.send(thunderbird_req)
             # handle_communication(thunderbird_req.decode(), prefix_imap_client)
-            print('sended to yandex')
 
             # revice data from yandex via yandex-client
-            print('before read from yandex')
 
             if 'IDLE' in decoded_thunderbird_req:
                 print('saving to file')
@@ -149,7 +142,6 @@ class IMAPServer:
                 if any(keyword.upper() in line_str for keyword in breaking_keywords):
                     break
 
-            print('after read from yandex', yandex_server_data)
 
             yandex_resp = b''.join(yandex_server_data)
 
@@ -159,7 +151,6 @@ class IMAPServer:
             # send data to thunderbid
             thunderbird_writer.write(yandex_resp)
 
-            print('sended to thunderbird')
 
 
         print(f"Closing connection with {addr}")
