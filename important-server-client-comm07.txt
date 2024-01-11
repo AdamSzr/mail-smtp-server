@@ -1,0 +1,63 @@
+server > * OK IMAP4rev1 Server Ready
+client > DMJG0 CAPABILITY
+server > * CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID AUTH=PLAIN AUTH=XOAUTH2 IDLE MOVE
+server > DMJG0 OK CAPABILITY Completed.
+client > 23 capability
+server > * CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID AUTH=PLAIN AUTH=XOAUTH2 IDLE MOVE
+23 OK capability Completed.
+client > 24 authenticate PLAIN
+server > +
+client > AHJ6ZWthMjQAY2tzZG9lbHBhZmdxY2N5cA==
+server > 2 OK PLAIN authenticate Completed.
+client > 26 login "rzeka24" "cksdoelpafgqccyp"
+client > 26 login "rzeka24" "cksdoelpafgqccyp"
+server > * CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID IDLE MOVE
+26 OK login Completed.
+client > 27 ID ("name" "Thunderbird" "version" "115.6.0")
+server > * ID ("name" "Yandex Mail" "vendor" "Yandex" "support-url" "http://feedback.yandex.ru/?from=mail")
+27 OK ID Completed.
+client > 28 select "INBOX"
+server > * FLAGS (\Answered \Seen \Draft \Deleted $Forwarded)
+* 3 EXISTS
+* 0 RECENT
+* OK [PERMANENTFLAGS (\Answered \Seen \Draft \Flagged \Deleted $Forwarded \*)] Limited
+* OK [UIDNEXT 33] Ok
+* OK [UIDVALIDITY 1704221294] Ok
+28 OK [READ-WRITE] select Completed.
+client > 29 UID fetch 1:* (FLAGS)
+server > * 1 FETCH (UID 28 FLAGS (\Seen \Draft))
+* 2 FETCH (UID 29 FLAGS (\Seen encrypted))
+* 3 FETCH (UID 31 FLAGS (\Seen \Draft))
+29 OK UID fetch Completed.
+client > 31 uid move 28 "Trash"
+server > * OK [COPYUID 1704221294 28 33]
+* 1 EXPUNGE
+31 OK uid move Completed.
+client > 32 UID fetch 32:* (FLAGS)
+server > 32 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 33 uid store 29 +Flags (\Seen)
+server > * 1 FETCH (UID 29 FLAGS (\Seen encrypted))
+33 OK uid store Completed.
+client > 35 uid move 28:29 "Trash"
+server > * OK [COPYUID 1704221294 29 34]
+* 1 EXPUNGE
+35 OK uid move Completed.
+client > 37 uid move 28:29 "Trash"
+server > 37 OK [CLIENTBUG] uid move Completed (no messages).
+client > 38 noop
+server > 38 OK noop Completed.
+client > 39 UID fetch 32:* (FLAGS)
+server > 39 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 40 noop
+server > 40 OK noop Completed.
+client > 41 UID fetch 32:* (FLAGS)
+server > 41 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 42 noop
+server > 42 OK noop Completed.
+client > 43 UID fetch 32:* (FLAGS)
+server > 43 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 44 noop
+server > 44 OK noop Completed.
+client > 45 UID fetch 32:* (FLAGS)
+server > 45 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 46 IDLE

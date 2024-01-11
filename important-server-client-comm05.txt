@@ -1,0 +1,47 @@
+server > * OK IMAP4rev1 Server Ready
+client > DMJG0 CAPABILITY
+server > * CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID AUTH=PLAIN AUTH=XOAUTH2 IDLE MOVE
+server > DMJG0 OK CAPABILITY Completed.
+client > 26 capability
+server > * CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID AUTH=PLAIN AUTH=XOAUTH2 IDLE MOVE
+26 OK capability Completed.
+client > 27 authenticate PLAIN
+server > +
+client > AHJ6ZWthMjQAY2tzZG9lbHBhZmdxY2N5cA==
+server > 2 OK PLAIN authenticate Completed.
+client > 29 login "rzeka24" "cksdoelpafgqccyp"
+client > 29 login "rzeka24" "cksdoelpafgqccyp"
+server > * CAPABILITY IMAP4rev1 CHILDREN UNSELECT LITERAL+ NAMESPACE XLIST UIDPLUS ENABLE ID IDLE MOVE
+29 OK login Completed.
+client > 30 ID ("name" "Thunderbird" "version" "115.6.0")
+server > * ID ("name" "Yandex Mail" "vendor" "Yandex" "support-url" "http://feedback.yandex.ru/?from=mail")
+30 OK ID Completed.
+client > 31 select "INBOX"
+server > * FLAGS (\Answered \Seen \Draft \Deleted $Forwarded)
+* 4 EXISTS
+* 0 RECENT
+* OK [PERMANENTFLAGS (\Answered \Seen \Draft \Flagged \Deleted $Forwarded \*)] Limited
+* OK [UIDNEXT 33] Ok
+* OK [UIDVALIDITY 1704221294] Ok
+31 OK [READ-WRITE] select Completed.
+client > 32 UID fetch 1:* (FLAGS)
+server > * 1 FETCH (UID 28 FLAGS (\Seen \Draft))
+* 2 FETCH (UID 29 FLAGS (\Seen encrypted))
+* 3 FETCH (UID 30 FLAGS (\Seen encrypted))
+* 4 FETCH (UID 31 FLAGS (\Seen \Draft))
+32 OK UID fetch Completed.
+client > 34 uid move 30 "Trash"
+server > * OK [COPYUID 1704221294 30 32]
+* 3 EXPUNGE
+34 OK uid move Completed.
+client > 36 uid move 30 "Trash"
+server > 36 OK [CLIENTBUG] uid move Completed (no messages).
+client > 37 noop
+server > 37 OK noop Completed.
+client > 38 UID fetch 32:* (FLAGS)
+server > 38 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 39 noop
+server > 39 OK noop Completed.
+client > 40 UID fetch 32:* (FLAGS)
+server > 40 OK [CLIENTBUG] UID fetch completed (no messages)
+client > 41 IDLE
