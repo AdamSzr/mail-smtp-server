@@ -1,0 +1,95 @@
+Received: from postback22a.mail.yandex.net (postback22a.mail.yandex.net [2a02:6b8:c0e:500:1:45:d181:da22])
+	by 3k7voqg74eapzlj5.vla.yp-c.yandex.net (notsolitesrv/Yandex) with LMTP id KBuJJrX8fxOQ-LqTOGoi1
+	for <rzeka24@yandex.com>; Tue, 02 Jan 2024 22:00:09 +0300
+Received: from mail-nwsmtp-mxfront-production-main-36.vla.yp-c.yandex.net (mail-nwsmtp-mxfront-production-main-36.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:3e9c:0:640:521d:0])
+	by postback22a.mail.yandex.net (Yandex) with ESMTPS id 8B4565DC29
+	for <rzeka24@yandex.com>; Tue,  2 Jan 2024 22:00:09 +0300 (MSK)
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [2607:f8b0:4864:20::536])
+	by mail-nwsmtp-mxfront-production-main-36.vla.yp-c.yandex.net (mxfront/Yandex) with ESMTPS id 70gBgPomaSw0-s1ldQtjo;
+	Tue, 02 Jan 2024 22:00:09 +0300
+X-Yandex-Fwd: 1
+Authentication-Results: mail-nwsmtp-mxfront-production-main-36.vla.yp-c.yandex.net; spf=pass (mail-nwsmtp-mxfront-production-main-36.vla.yp-c.yandex.net: domain of gmail.com designates 2607:f8b0:4864:20::536 as permitted sender, rule=[ip6:2607:f8b0:4000::/36]) smtp.mail=mr.honos@gmail.com; dkim=pass header.i=@gmail.com
+X-Yandex-Spam: 4
+X-Yandex-Uid-Status: 4 1933751457
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5ce9555d42eso1244455a12.2
+        for <rzeka24@yandex.com>; Tue, 02 Jan 2024 11:00:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704222007; x=1704826807; darn=yandex.com;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1aPMSHzJYOMCRHowZiF9HGgHpzJnuf07hPPOYWjoLHc=;
+        b=It2WBQFnFnGNCWLqNOnh/2DIi0q31Ue7q9GZRzsr3fdspdjBSR7qCZovs5VG2b/YrT
+         S6uTAm/6yojwuzxgwitGe3ob6cx3G2fDPD48tOOmdx0CmtlxXMYiSPXSgmP94ZTzLejc
+         GDed69XDSoJzPV4nX3cCAAmRo5FbbykUXfyNZTJC4Bs2WtwlGuBpe1h4yP9EjsuqdrCC
+         yTYXS901pvIBgXO96jnttUTvqx1gwKCTWUia+6k6DkBC9s/eRgG4yOEzAKKUHTEG0iGC
+         VDwEG6ZGnPPOdkWlseMVdT2Ez/VUOnrP//lvooQroETjN0vkpuaC5oyMdYy20b0cUxeR
+         gqNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704222007; x=1704826807;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1aPMSHzJYOMCRHowZiF9HGgHpzJnuf07hPPOYWjoLHc=;
+        b=C77IMlau8OryKD0fL7zWZVb4wY+GWvktt06eI33gGviUuzyg24hDxq/YE87p0U+kcx
+         wO+P2CZ+o/as8Azi6/KaJ2u6mYqFe8c/vr5b5KddcvbpPYJseY8kvBnVXnF5Dy+ShfXH
+         C6fsKKAesrSgK2nEDH1TYv6U4qDtfWsOaW4J6wZVJX+gsXAeY5Y5EPakEIi2LOv1AmCX
+         zIb6jnKzhyU4jrwqjHX+Q178WsI+4LMkGa/8oeSS/WEcbVLDvXSP3VGINkzuRKoMhIW9
+         68+v2wNrOUnrwJc4AqfK4Gwn5aiip889+1/RYI9lDJ57cPmpWfjsif07wEtY1g0J98Sx
+         4hsg==
+X-Gm-Message-State: AOJu0YzmTpQhD5T0cAWT/lnpawOIJUySZUFckkVCuTugJBVVXWehuaMp
+	VReXglcxjks2v0/OKTpZatBuWVV3MryFEa40k2Qf1xp6Ics=
+X-Google-Smtp-Source: AGHT+IF5q4AtLaDrvXb6Rpgb8ZMf8kiGxrYgfl//MdoRvn2Knmc2bkG+fA8SUdLF4aMGxd+NdUdLEyPWv+myKIqmrvw=
+X-Received: by 2002:a5b:906:0:b0:dbd:ad04:1cf6 with SMTP id
+ a6-20020a5b0906000000b00dbdad041cf6mr8828727ybq.27.1704221513973; Tue, 02 Jan
+ 2024 10:51:53 -0800 (PST)
+MIME-Version: 1.0
+From: Adam Szreiber <mr.honos@gmail.com>
+Date: Tue, 2 Jan 2024 19:51:43 +0100
+Message-ID: <CAKRCm1di=LuELfomxpenEAGrrF=enQeviiGaOWg1q3-Z95QwPg@mail.gmail.com>
+Subject: test 2 - na zdrowie - kochanowski
+To: rzeka24@yandex.com
+Content-Type: multipart/alternative; boundary="000000000000f585aa060dfafd13"
+Return-Path: mr.honos@gmail.com
+X-Yandex-Forward: 4cf040059aaec3feb08c9e675ba06734
+
+--000000000000f585aa060dfafd13
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+=C5=9Alachetne zdrowie,
+Nikt si=C4=99 nie dowie,
+Jako smakujesz,
+A=C5=BC si=C4=99 zepsujesz.
+Tam cz=C5=82owiek prawie
+Widzi na jawie
+I sam to powie,
+=C5=BBe nic nad zdrowie
+Ani lepszego,
+Ani dro=C5=BCszego;
+Bo dobre mienie,
+Per=C5=82y, kamienie,
+Tak=C5=BCe wiek m=C5=82ody
+I dar urody,
+Mie=C5=9Bca wysokie,
+W=C5=82adze szerokie Dobre s=C4=85, ale =E2=80=94
+Gdy zdrowie wcale.
+Gdzie nie masz si=C5=82y,
+I =C5=9Bwiat niemi=C5=82y.
+Klinocie drogi,
+M=C3=B3j dom ubogi
+Oddany tobie
+Ulubuj sobie!
+
+--000000000000f585aa060dfafd13
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">=C5=9Alachetne zdrowie,<br>Nikt si=C4=99 nie dowie,<br>Jak=
+o smakujesz,<br>A=C5=BC si=C4=99 zepsujesz.<br>Tam cz=C5=82owiek prawie<br>=
+Widzi na jawie<br>I sam to powie,<br>=C5=BBe nic nad zdrowie<br>Ani lepszeg=
+o,<br>Ani dro=C5=BCszego;<br>Bo dobre mienie,<br>Per=C5=82y, kamienie,<br>T=
+ak=C5=BCe wiek m=C5=82ody<br>I dar urody,<br>Mie=C5=9Bca wysokie,<br>W=C5=
+=82adze szerokie Dobre s=C4=85, ale =E2=80=94<br>Gdy zdrowie wcale.<br>Gdzi=
+e nie masz si=C5=82y,<br>I =C5=9Bwiat niemi=C5=82y.<br>Klinocie drogi,<br>M=
+=C3=B3j dom ubogi<br>Oddany tobie<br>Ulubuj sobie!<br></div>
+
+--000000000000f585aa060dfafd13--

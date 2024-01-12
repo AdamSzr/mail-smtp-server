@@ -7,7 +7,7 @@ from urllib import request
 from datetime import datetime
 
 # IMAP
-yandex_key = 'tnypwvqyyyqhviif'  #
+yandex_key = 'cksdoelpafgqccyp'  #
 yandex_host = 'imap.yandex.com'
 yandex_port = 993
 yandex_login = 'rzeka24'  # rzeka24@yandex.com
@@ -81,6 +81,11 @@ class IMAPServer:
                 break
 
             decoded_thunderbird_req = thunderbird_req.decode()
+
+            if 'SAVE' in decoded_thunderbird_req:
+                save_list_to_file(messages, 'comm')
+                continue
+
 
             # save request from thunderbird
             handle_communication(decoded_thunderbird_req, prefix_imap_client),
@@ -156,6 +161,7 @@ class IMAPServer:
         print(f"Closing connection with {addr}")
         thunderbird_writer.close()
         await thunderbird_writer.wait_closed()
+
 
 
 async def run_server():

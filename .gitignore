@@ -1,4 +1,4 @@
 local-venv*
 
 ./idea
-*.txt
+comm*.txt

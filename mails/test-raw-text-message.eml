@@ -1,0 +1,17 @@
+Received: from sh4ynqz4zpjobpoa.sas.yp-c.yandex.net (sh4ynqz4zpjobpoa.sas.yp-c.yandex.net [2a02:6b8:c08:82a8:0:640:5542:0])
+	by mail-nwsmtp-mxback-production-main-72.sas.yp-c.yandex.net (mxback/Yandex) with HTTP id o1o2CM8qQqM0-WTVU6eyQ
+	for <rzeka24@yandex.com>; Wed, 10 Jan 2024 22:01:57 +0300
+X-Yandex-Fwd: 1
+Received: by sh4ynqz4zpjobpoa.sas.yp-c.yandex.net with HTTP;
+	Wed, 10 Jan 2024 22:01:57 +0300
+From: rzeka24 rzeka24 <rzeka24@yandex.com>
+To: rzeka24 rzeka24 <rzeka24@yandex.com>
+Subject: test-raw-text-message
+MIME-Version: 1.0
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Wed, 10 Jan 2024 20:01:57 +0100
+Message-Id: <553651704913287@mail.yandex.com>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html
+
+<div>hej jak sie masz testowa wiadomosc</div>

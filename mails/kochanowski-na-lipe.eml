@@ -1,0 +1,87 @@
+Received: from postback13b.mail.yandex.net (postback13b.mail.yandex.net [2a02:6b8:c02:900:1:45:d181:da13])
+	by dio7yov3iycb7dql.iva.yp-c.yandex.net (notsolitesrv/Yandex) with LMTP id 5y6EHzBXJWfK-S3v96ByT
+	for <rzeka24@yandex.com>; Tue, 02 Jan 2024 21:56:27 +0300
+Received: from mail-nwsmtp-mxfront-production-main-43.sas.yp-c.yandex.net (mail-nwsmtp-mxfront-production-main-43.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:1014:0:640:ffc1:0])
+	by postback13b.mail.yandex.net (Yandex) with ESMTPS id 6C1C15E4AC
+	for <rzeka24@yandex.com>; Tue,  2 Jan 2024 21:56:27 +0300 (MSK)
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [2607:f8b0:4864:20::52e])
+	by mail-nwsmtp-mxfront-production-main-43.sas.yp-c.yandex.net (mxfront/Yandex) with ESMTPS id PufFUAF2ta60-Lc8Kz82Q;
+	Tue, 02 Jan 2024 21:56:26 +0300
+X-Yandex-Fwd: 1
+Authentication-Results: mail-nwsmtp-mxfront-production-main-43.sas.yp-c.yandex.net; spf=pass (mail-nwsmtp-mxfront-production-main-43.sas.yp-c.yandex.net: domain of gmail.com designates 2607:f8b0:4864:20::52e as permitted sender, rule=[ip6:2607:f8b0:4000::/36]) smtp.mail=mr.honos@gmail.com; dkim=pass header.i=@gmail.com
+X-Yandex-Spam: 4
+X-Yandex-Uid-Status: 4 1933751457
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-53fa455cd94so2475848a12.2
+        for <rzeka24@yandex.com>; Tue, 02 Jan 2024 10:56:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704221785; x=1704826585; darn=yandex.com;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nYrWmnhjM/KnlYummHqs3cfUmWMBZppOsNOv5FU3IAE=;
+        b=AJMrI0+BDhUaqQTcPdi1z+86X+o9p7cN4qhaNyrCCtnN1p9fKzFX7K58gcFGh2TOuj
+         wNNgKF5RfaV8MaYy8dvd6ppdPygCwJGwH7f3Ecx1i0QhdjCLLa9TqgEEP+KNtJYNXKsr
+         t43ZndyMD1uAIZ6wNd73zbdx6Psd1yb/SvfXxM7CUW1Zd2LNhOL/KPV/60Fcy2MXQIJf
+         YZ1ZFzLx/lkDsACe6wN4/v8EW0kHtDtjbHbwmEXeOkDL5gbBK6nas8+HE9h5Bb+qtbBJ
+         KnXPCOFBLxGO7y68lKnFL/PQQSNPfJke9C9j5E11F+Wifl1zjzxfeN+9FXtymr4wIeIu
+         FWdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704221785; x=1704826585;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nYrWmnhjM/KnlYummHqs3cfUmWMBZppOsNOv5FU3IAE=;
+        b=iWSAcZxLo5iY0De4F9ExoLyie3L64mIIjUzULuuytoDHMQtSWDICjFRrKtWPsfymyC
+         yCoiXC+TRkwxUWjYNEZ5mdCJBWPCX8+8cHdHkIF4bceM3wFx/4Mncjmo29N7OcClFgx+
+         xdYWJvmjXci7p72igdR9wJ+JCnrjqoCIVhKv2sbC5rVr744c75mMFEKpUPCp6ORtY+SA
+         4wR7XR/4AZoy6xPh1VMA1lssct88+51+tal3FCUiCLpvUwBHUKSEi7GBPvwwFz5YNAq6
+         vM7EWnYsRUWE6wn4n918v48a98SFUWc5VBPr3WL7fI53bVslWeTAsAKdMJ0ToW17taT1
+         MCwQ==
+X-Gm-Message-State: AOJu0Yw1fSIqKi4ZRSGvWNN685k2CBjaeJ/u01CtrFzg712tuFxZoCKW
+	qI8l2jKRL9z2T9VaIlsadjHfbA7A7VTSOSm39k04EUPu1+8=
+X-Google-Smtp-Source: AGHT+IEzDpToMTJ70n8WkdSFgO0+4CmIePD+rPuye4j2+52GJyKBrAYVaYskKBBXVqw9N3BRjuZDpk1C9kgV/DySrf0=
+X-Received: by 2002:a25:5f4e:0:b0:dbc:fb03:6ec with SMTP id
+ h14-20020a255f4e000000b00dbcfb0306ecmr7462681ybm.125.1704221404414; Tue, 02
+ Jan 2024 10:50:04 -0800 (PST)
+MIME-Version: 1.0
+From: Adam Szreiber <mr.honos@gmail.com>
+Date: Tue, 2 Jan 2024 19:49:53 +0100
+Message-ID: <CAKRCm1cVfay6hRyfnbqoKkCrSr68yDiw3SOdkuMQH5Ap4k80vQ@mail.gmail.com>
+Subject: =?UTF-8?Q?test_mail_=2D_kochanowski_na_lip=C4=99?=
+To: rzeka24@yandex.com
+Content-Type: multipart/alternative; boundary="0000000000006dc6be060dfaf7d8"
+Return-Path: mr.honos@gmail.com
+X-Yandex-Forward: 4cf040059aaec3feb08c9e675ba06734
+
+--0000000000006dc6be060dfaf7d8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Go=C5=9Bciu, si=C4=85d=C5=BA pod mym li=C5=9Bciem, a odpoczni sobie!
+Nie dojdzie ci=C4=99 tu s=C5=82o=C5=84ce, przyrzekam ja tobie,
+Cho=C4=87 si=C4=99 nawysszej wzbije, a proste promienie
+=C5=9Aci=C4=85gn=C4=85 pod swoje drzewa rozstrzelane cienie.
+Tu zaw=C5=BCdy ch=C5=82odne wiatry z pola zawiewaj=C4=85,
+Tu s=C5=82owicy, tu szpacy wdzi=C4=99cznie narzekaj=C4=85.
+Z mego wonnego kwiatu pracowite pszczo=C5=82y
+Bior=C4=85 mi=C3=B3d, kt=C3=B3ry potym szlachci pa=C5=84skie sto=C5=82y.
+A ja swym cichym szeptem sprawi=C4=87 umiem snadnie,
+=C5=BBe cz=C5=82owiekowi =C5=82acno s=C5=82odki sen przypadnie.
+Jab=C5=82ek wprawdzie nie rodz=C4=99, lecz mi=C4=99 pan tak k=C5=82adzie
+Jako szczep nap=C5=82odniejszy w hesperyskim sadzie.
+
+--0000000000006dc6be060dfaf7d8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Go=C5=9Bciu, si=C4=85d=C5=BA pod mym li=C5=9Bciem, a odpoc=
+zni sobie!<br>Nie dojdzie ci=C4=99 tu s=C5=82o=C5=84ce, przyrzekam ja tobie=
+,<br>Cho=C4=87 si=C4=99 nawysszej wzbije, a proste promienie<br>=C5=9Aci=C4=
+=85gn=C4=85 pod swoje drzewa rozstrzelane cienie.<br>Tu zaw=C5=BCdy ch=C5=
+=82odne wiatry z pola zawiewaj=C4=85,<br>Tu s=C5=82owicy, tu szpacy wdzi=C4=
+=99cznie narzekaj=C4=85.<br>Z mego wonnego kwiatu pracowite pszczo=C5=82y<b=
+r>Bior=C4=85 mi=C3=B3d, kt=C3=B3ry potym szlachci pa=C5=84skie sto=C5=82y.<=
+br>A ja swym cichym szeptem sprawi=C4=87 umiem snadnie,<br>=C5=BBe cz=C5=82=
+owiekowi =C5=82acno s=C5=82odki sen przypadnie.<br>Jab=C5=82ek wprawdzie ni=
+e rodz=C4=99, lecz mi=C4=99 pan tak k=C5=82adzie<br>Jako szczep nap=C5=82od=
+niejszy w hesperyskim sadzie.<br></div>
+
+--0000000000006dc6be060dfaf7d8--
