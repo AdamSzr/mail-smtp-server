@@ -63,7 +63,6 @@ class IMAPServer:
         print(f"Connected with {addr}")
 
         # na początku serwer imap wysyła podstawowe info welcome message.
-        # client by default sends and recives welcome message.
         imap_client = getPreparedClient()
         welcome_message = '* OK IMAP4rev1 Server Ready\r\n'
         handle_communication(welcome_message, prefix_yandex)
@@ -85,7 +84,6 @@ class IMAPServer:
             if 'SAVE' in decoded_thunderbird_req:
                 save_list_to_file(messages, 'comm')
                 continue
-
 
             # save request from thunderbird
             handle_communication(decoded_thunderbird_req, prefix_imap_client),
@@ -128,11 +126,7 @@ class IMAPServer:
                 await thunderbird_writer.drain()
                 continue
 
-            # send request to yandex via yandex-client
             imap_client.send(thunderbird_req)
-            # handle_communication(thunderbird_req.decode(), prefix_imap_client)
-
-            # revice data from yandex via yandex-client
 
             if 'IDLE' in decoded_thunderbird_req:
                 print('saving to file')

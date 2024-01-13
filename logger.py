@@ -10,7 +10,7 @@ class Logger():
     def dump(self, file_name='logs', separator=''):
         try:
             formatted_date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            with open(file_name + '_' + formatted_date + '.txt', 'w') as file:
+            with open('/logs/'+file_name + '_' + formatted_date + '.txt', 'w') as file:
                 for string in self.messages:
                     file.write(string + separator)
         except Exception as e:
